@@ -13,6 +13,7 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use League\Flysystem\Visibility;
 
 class StudentResource extends Resource
 {
@@ -28,8 +29,12 @@ class StudentResource extends Resource
             ->schema([
                 Forms\Components\FileUpload::make('foto')
                     ->image()
-                    ->imageEditor()
-                    ->imageEditorAspectRatios(['1:1'])
+                    ->imageCropAspectRatio('1:1')
+                    ->disk('public')
+                    ->directory('students')
+                    ->visibility('public')
+                    ->maxSize(1024)
+                    ->imagePreviewHeight('250')
                     ->columnSpanFull(),
                 Forms\Components\TextInput::make('nama')
                     ->required()
