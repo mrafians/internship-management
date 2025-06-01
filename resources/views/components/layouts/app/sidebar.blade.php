@@ -28,6 +28,12 @@
 
             <!-- Desktop User Menu -->
             <flux:dropdown position="bottom" align="start">
+                @php
+                $students = App\Models\Student::where('email', Auth::user()->email)->first();
+
+                $studentsPhoto = $students->foto;
+                @endphp
+
                 <flux:profile
                     :name="auth()->user()->name"
                     :initials="auth()->user()->initials()"
