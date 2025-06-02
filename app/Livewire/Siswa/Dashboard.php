@@ -50,7 +50,19 @@ class Dashboard extends Component
             'industri_id' => ['required', 'exists:industries,id'],
             'guru_id' => ['required', 'exists:teachers,id'],
             'mulai' => ['required', 'date'],
-            'selesai' => ['required', 'date', 'after:mulai'],
+            'selesai' => [
+                'required',
+                'date',
+                function ($attribute, $value, $fail) {
+                    $tanggalMulai = strtotime($this->mulai);
+                    $tanggalSelesai = strtotime($value);
+                    $selisihHari = ($tanggalSelesai - $tanggalMulai) / 86400; // Konversi ke hari
+
+                    if ($selisihHari < 90) {
+                        $fail('Tanggal selesai harus minimal 90 hari setelah tanggal mulai.');
+                    }
+                },
+            ],
         ]);
 
         Internship::create($validated);

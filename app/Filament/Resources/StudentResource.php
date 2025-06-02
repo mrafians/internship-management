@@ -98,7 +98,17 @@ class StudentResource extends Resource
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+                    Tables\Actions\DeleteBulkAction::make()
+                        ->action(function ($records) {
+                            $deleted = 0;
+
+                            foreach ($records as $record) {
+                                if (!$record->status_pkl) {
+                                    $record->delete();
+                                    $deleted++;
+                                }
+                            }
+                        })
                 ]),
             ]);
     }

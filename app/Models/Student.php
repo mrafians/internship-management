@@ -22,6 +22,6 @@ class Student extends Model
     ];
 
     public function internship() {
-        return $this->hasMany(Internship::class);
+        return $this->hasMany(Internship::class, 'siswa_id');
     }
 }
